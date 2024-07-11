@@ -1,0 +1,84 @@
+#The function now takes three arguments:
+#If the second argument is True, the generated password should also contain one or more numbers.
+#If the third argument is True, the generated password should also contain one or more of these special characters: !?=+-()#.
+#Despite these two additional arguments, the password should always contain at least one lowercase alphabet. You may assume the function will only be called with combinations of arguments that are possible to formulate into passwords following these rules.
+#That is, the arguments will not specify
+#e.g. a password of length 2 which contains both a number and a special characters, for then there would not be space for the mandatory lowercase letter.
+
+#code 
+import string
+from random import sample
+
+def generate_strong_password(amount: int,first: bool,second: bool):
+    strong_password =''
+    final_password =''
+    words = string.ascii_lowercase
+    numbers = string.digits
+    schar = '!?=+-()#'
+
+    if first == True and second == True:
+        strong_password += words + numbers + schar    
+        while True:
+            final_password = sample(strong_password,amount)
+            new_final_password =''
+            for word in final_password:
+                new_final_password += word
+            has_lower = False
+            has_digit = False
+            has_schar = False
+            for char in new_final_password:
+                if char in words:
+                    has_lower = True
+                elif char in numbers:
+                    has_digit = True
+                elif char in schar:
+                    has_schar = True
+            if has_lower and has_digit and has_schar:
+                return new_final_password
+            
+        
+    elif first==False and second ==True:
+        strong_password += words + schar
+        while True:
+            final_password = sample(strong_password,amount)
+            new_final_password =''
+            for word in final_password:
+                new_final_password += word
+            has_lower = False
+            has_schar = False
+            for char in new_final_password:
+                if char in words:
+                    has_lower = True
+                elif char in schar:
+                    has_schar = True
+            if has_lower and has_schar:
+                return new_final_password  
+    
+    elif first == True and second == False:
+        strong_password += words + numbers
+        while True:
+            final_password = sample(strong_password,amount)
+            new_final_password =''
+            for word in final_password:
+                new_final_password += word
+            has_lower = False
+            has_digit = False
+            for char in new_final_password:
+                if char in words:
+                    has_lower = True
+                elif char in numbers:
+                    has_digit = True
+            if has_lower and has_digit:
+                return new_final_password  
+    
+    elif first ==False and second ==False:
+        final_password = sample(words,amount)
+        new_final_password =''
+        for word in final_password:
+            new_final_password += word
+        return new_final_password
+
+
+if __name__ == "__main__":
+    for i in range(10):
+        print(generate_strong_password(5, False, False))
